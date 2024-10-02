@@ -1,4 +1,3 @@
-﻿# React Comments App
 # React Comments App
 
 This is a simple **React Comments App** where users can view a post, its comments, and replies. The application features one level of nested replies, and the comments and replies can be expanded or collapsed dynamically. The app is built with a focus on accessibility and is deployed using GitHub Pages with automated deployment via GitHub Actions.
