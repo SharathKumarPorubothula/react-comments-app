@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>React Post with Comments</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <!-- React, ReactDOM, and Babel via CDN -->
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Your React code, transpiled by Babel -->
+    <script type="text/babel">
+      const { useState } = React;
+
+      // Sample Data
+      const postData = {
+        id: 1,
+        content: "This is a sample post",
+        comments: [
+          {
+            id: 1,
+            content: "This is a comment",
+            replies: [
+              { id: 1, content: "This is a reply to the comment" },
+            ],
+          },
+          {
+            id: 2,
+            content: "This is another comment",
+            replies: [],
+          },
+        ],
+      };
+
+      function Post({ post }) {
+        return (
+          <div className="post" role="article">
+            <p>{post.content}</p>
+            <CommentList comments={post.comments} />
+          </div>
+        );
+      }
+
+      function CommentList({ comments }) {
+        return (
+          <div className="comment-list" role="list">
+            {comments.map((comment) => (
+              <Comment key={comment.id} comment={comment} />
+            ))}
+          </div>
+        );
+      }
+
+      function Comment({ comment }) {
+        const [showReplies, setShowReplies] = useState(false);
+
+        const toggleReplies = () => setShowReplies(!showReplies);
+
+        return (
+          <div className="comment" role="listitem">
+            <p>{comment.content}</p>
+            {comment.replies.length > 0 && (
+              <button onClick={toggleReplies} aria-expanded={showReplies}>
+                {showReplies ? "Hide Replies" : "Show Replies"}
+              </button>
+            )}
+            {showReplies && <ReplyList replies={comment.replies} />}
+          </div>
+        );
+      }
+
+      function ReplyList({ replies }) {
+        return (
+          <div className="reply-list" role="list">
+            {replies.map((reply) => (
+              <Reply key={reply.id} reply={reply} />
+            ))}
+          </div>
+        );
+      }
+
+      function Reply({ reply }) {
+        return (
+          <div className="reply" role="listitem">
+            <p>{reply.content}</p>
+          </div>
+        );
+      }
+
+      // Rendering the main Post component into the #root div
+      ReactDOM.render(<Post post={postData} />, document.getElementById("root"));
+    </script>
+  </body>
+</html>
